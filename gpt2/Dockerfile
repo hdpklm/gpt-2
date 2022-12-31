@@ -12,8 +12,8 @@ ADD requirements.txt /gpt-2
 ADD download_model.py /gpt-2
 
 RUN pip3 install -r requirements.txt
-# RUN python3 download_model.py 124M
-RUN python3 download_model.py 355M
+RUN python3 download_model.py 124M
+# RUN python3 download_model.py 355M
 # RUN python3 download_model.py 774M
 # RUN python3 download_model.py 1558M
 
