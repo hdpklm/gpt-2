@@ -1,0 +1,12 @@
+docker-compose up -d
+
+docker build -t gpt -f Dockerfile.cpu .
+docker-compose -f docker-compose.yml up -d --build
+docker-compose -f docker-compose-gpu.yml up -d --build
+
+
+
+bash
+python src/app.py
+pip install Flask
+apt-get install nano

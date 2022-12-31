@@ -1,0 +1,176 @@
+<!-- 
+content of this page
+	this page is a chatbot
+	has a large div for show the output of chatbot
+	has a small input for input the text
+	has a button for send the text to chatbot
+
+	it has a function for send the text to chatbot via fetch to localhost:5000/msg
+	it has a function for show the output of chatbot
+ -->
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<title>chatbot</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			html {
+				height: 100%;
+			}
+
+			body {
+				height: 100%;
+				background-color: #1b1b1b;
+			}
+
+			#chatbot {
+				width: 100%;
+				height: 100%;
+				position: relative;
+			}
+
+			#chatbot>.output {
+				width: 100%;
+				height: calc(100% - 50px);
+				overflow: auto;
+				background-color: #2b2b2b;
+				color: #fff;
+				padding: 10px;
+				box-sizing: border-box;
+			}
+
+			#chatbot>.output>.message {
+				margin: 5px 0;
+				padding: 5px;
+				border-radius: 5px;
+			}
+
+			#chatbot>.output>.message>.text {
+				display: inline-block;
+				margin: 0 5px;
+			}
+
+			#chatbot>.output>.message>.time {
+				display: inline-block;
+				font-size: 12px;
+				color: #888;
+			}
+
+			#chatbot>.output>.message>.user {
+				color: #fff;
+			}
+
+			#chatbot>.output>.message>.bot {
+				color: #0f0;
+			}
+
+			#chatbot>.input {
+				display: flex;
+				width: 100%;
+				height: 48px;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				padding: 10px;
+				background-color: #2b2b2b;
+			}
+
+			#chatbot>.input>.text {
+				width: calc(100% - 90px);
+				height: 23px;
+				margin-right: 10px;
+				background-color: #1e3e53;
+				border: none;
+				color: #fff;
+				padding: 0 15px;
+				box-sizing: border-box;
+				border-radius: 15px;
+			}
+
+			#chatbot>.input>.button {
+				width: 60px;
+				height: 23px;
+				/* float: left; */
+				background-color: #000000;
+				border: none;
+				color: #fff;
+				padding: 0 10px;
+				box-sizing: border-box;
+				border-radius: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="chatbot">
+			<div class="output">&nbsp;</div>
+			<div class="input">
+				<input type="text" class="text">
+				<button class="button">send</button>
+			</div>
+		</div>
+
+		<script>
+			// send text to chatbot
+			function send(text) {
+				// create a new div for show the output
+				let div = document.createElement("div");
+				div.classList.add("message");
+				div.classList.add("user");
+				div.innerHTML = `
+				<span class="text">${text}</span>
+				<span class="time">${new Date().toLocaleString()}</span>
+			`;
+				document.querySelector("#chatbot > .output").appendChild(div);
+
+				// send text to chatbot
+				fetch("http://localhost:5000/msg", {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify({
+						text: text
+					})
+				}).then(function (response) {
+					// show output of chatbot
+					return response.json();
+				}).then(function (data) {
+					// create a new div for show the output
+					let div = document.createElement("div");
+					div.classList.add("message");
+					div.classList.add("bot");
+					div.innerHTML = `
+					<span class="text">${data.text}</span>
+					<span class="time">${new Date().toLocaleString()}</span>
+				`;
+					document.querySelector("#chatbot > .output").appendChild(div);
+				});
+			}
+
+			// send text to chatbot when press on button
+			document.querySelector("#chatbot > .input > .button").addEventListener("click", function () {
+				let text = document.querySelector("#chatbot > .input > .text").value;
+				send(text);
+			});
+
+			// send text to chatbot when press enter
+			document.querySelector("#chatbot > .input > .text").addEventListener("keyup", function (event) {
+				if (event.keyCode === 13) {
+					let text = document.querySelector("#chatbot > .input > .text").value;
+					send(text);
+				}
+			});
+		</script>
+	</body>
+
+</html>

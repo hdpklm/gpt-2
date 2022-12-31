@@ -1,0 +1,14 @@
+# version: '3.4'
+
+# services:
+#   gpt:
+#     build: ./gpt2-gpu/
+#     container_name: gpt2-gpu-container
+#     # env_file:
+#     #   - ./gpt2-gpu/.env
+#     #   - ./gpt2-gpu/.env.example
+#     restart: always
+#     ports:
+#       - 5000:5000
+#     volumes:
+#       - c:/dockers:/gpt-2/models
