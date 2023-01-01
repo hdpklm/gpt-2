@@ -8,9 +8,4 @@ services:
     ports:
       - 5000:5000
     volumes:
-      - type: volume
-        source: gpt2
-        target: /gpt-2/models
-
-volumes:
-  gpt2:
+      - C:\dockers\gpt2\:/gpt-2/
